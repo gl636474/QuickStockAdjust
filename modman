@@ -1,0 +1,4 @@
+# modman installation file for QuickStockAdjust
+
+code                         app/code/local/Gareth/QuickStockAdjust
+Gareth_QuickStockAdjust.xml  app/etc/modules/Gareth_RoyalMail2.xml

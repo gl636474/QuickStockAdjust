@@ -1,0 +1,10 @@
+<?xml version="1.0"?>
+<config>
+  <modules>
+    <Gareth_QuickStockAdjust>
+      <version>1.0.0</version>
+      <active>true</active>
+      <codePool>local</codePool>
+    </Gareth_QuickStockAdjust>
+  </modules>
+</config>
