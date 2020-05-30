@@ -1,4 +1,13 @@
 # modman installation file for QuickStockAdjust
 
 code                         app/code/local/Gareth/QuickStockAdjust
-Gareth_QuickStockAdjust.xml  app/etc/modules/Gareth_RoyalMail2.xml
+Gareth_QuickStockAdjust.xml  app/etc/modules/Gareth_QuickStockAdjust.xml
+
+# Clear all caches
+@shell rm -rf "$PROJECT/var/cache"
+@shell rm -rf "$PROJECT/var/session"
+
+# DO NOT USE "$PROJECT/mage clear-cache"
+# It will screw up Magento - don't know why
+#
+@shell php "$MODULE/flush_cache.php" --mage-dir="$PROJECT"

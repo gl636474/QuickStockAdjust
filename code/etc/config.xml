@@ -1,0 +1,42 @@
+<?xml version="1.0"?>
+
+<config>
+    <modules>
+        <Gareth_QuickStockAdjust>
+            <version>1.0.0</version>
+        </Gareth_QuickStockAdjust>
+    </modules>
+        
+        
+    <global>
+        <helpers>
+            <gareth_quickstockadjust>
+                <class>Gareth_QuickStockAdjust_Helper</class>
+            </gareth_quickstockadjust>  
+        </helpers>
+        
+        <blocks>
+            <gareth_quickstockadjust_adminhtml>
+               <class>Gareth_QuickStockAdjust_Block_Adminhtml</class>
+            </gareth_quickstockadjust_adminhtml>
+        </blocks>
+    </global>        
+    
+    
+    <admin>
+        <routers>
+            <!-- alias for this router -->
+            <quick_stock_adjust_admin>
+                <use>admin</use>
+                <args>
+                    <!-- classname prefix/where to find controllers for this module -->
+                    <module>Gareth_QuickStockAdjust_Adminhtml</module>
+                    <!-- this is the term used in the actual URL -->
+                    <frontName>quick_stock_adjust</frontName>
+                </args>
+            </quick_stock_adjust_admin>
+        </routers>
+    </admin>
+ 
+    
+</config>

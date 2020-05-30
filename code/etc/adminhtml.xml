@@ -1,0 +1,37 @@
+<?xml version="1.0"?>
+
+<config>
+   <menu>
+        <catalog>
+            <children>
+                <quick_stock_adjust translate="title" module="gareth_quickstockadjust">
+                    <title>Quick Stock Adjust</title>
+                    <!-- Look for controller controllers/QuickAdjustController.php
+                         in <quick_stock_adjust> classes from <routers> in config.xml -->
+                    <action>quick_stock_adjust_admin/quickadjust</action>
+                    <sort_order>2</sort_order>
+                </quick_stock_adjust>
+            </children>                
+        </catalog>
+    </menu>
+    <acl>
+        <resources>
+            <admin>
+                <children>
+                    <catalog>
+                        <children>
+                            <quick_stock_adjust translate="title" module="gareth_quickstockadjust">
+                                <title>Quick Stock Adjust</title>
+                                <!-- Look for controller controllers/QuickAdjustController.php
+                                     in <quick_stock_adjust> from <routers> in config.xml -->
+                                <action>quick_stock_adjust/quickadjust</action>
+                                <sort_order>2</sort_order>
+                            </quick_stock_adjust>
+                        </children>
+                   </catalog>
+               </children>
+           </admin>
+       </resources>
+    </acl>
+    
+</config>
