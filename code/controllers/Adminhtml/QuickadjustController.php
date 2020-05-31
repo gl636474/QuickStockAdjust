@@ -34,24 +34,31 @@ class Gareth_QuickStockAdjust_Adminhtml_QuickadjustController extends Mage_Admin
 			{
 				/** @var Mage_Catalog_Model_Product $product */
 				$product = Mage::getModel('catalog/product')->load($productId);
-				
-				/** @var Mage_CatalogInventory_Model_Stock_Item $stock_item */
-				$stock_item = Mage::getModel('cataloginventory/stock_item')->loadByProduct($product);
-				
-				$stock_count = $stock_item->getQty();
-				$stock_count -= 1;
-				$stock_item->setQty($stock_count);
-				$stock_item->save();
-				
-				$this->_getSession()->addSuccess(
-						$this->__('%s stock count has been reduced to %d.', $product->getName(), $stock_count)
-						);
-				
-				// <routers> from comnfig.xml / controller name / action name
-				return $this->_redirect(
-						'quick_stock_adjust_admin/quickadjust/index',
-						array($productFieldName => $productId)
-						);
+				// load always returns a model - check it's not empty
+				if (!empty($product->getId()))
+				{
+					/** @var Mage_CatalogInventory_Model_Stock_Item $stock_item */
+					$stock_item = Mage::getModel('cataloginventory/stock_item')->loadByProduct($product);
+					
+					$stock_count = $stock_item->getQty();
+					$stock_count -= 1;
+					$stock_item->setQty($stock_count);
+					$stock_item->save();
+					
+					$this->_getSession()->addSuccess(
+							$this->__('%s stock count has been reduced to %d.', $product->getName(), $stock_count)
+							);
+					
+					// <routers> from comnfig.xml / controller name / action name
+					return $this->_redirect(
+							'quick_stock_adjust_admin/quickadjust/index',
+							array($productFieldName => $productId)
+							);
+				}
+				else
+				{
+					$this->_getSession()->addError($this->__("Unknown product Id: $productId"));
+				}
 			}
 			else
 			{
@@ -62,5 +69,8 @@ class Gareth_QuickStockAdjust_Adminhtml_QuickadjustController extends Mage_Admin
 			Mage::logException($e);
 			$this->_getSession()->addError($e->getMessage());
 		}
+		
+		// <routers> from comnfig.xml / controller name / action name
+		return $this->_redirect('quick_stock_adjust_admin/quickadjust/index');
 	}
 }

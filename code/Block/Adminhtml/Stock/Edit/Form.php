@@ -25,7 +25,7 @@ class Gareth_QuickStockAdjust_Block_Adminhtml_Stock_Edit_Form extends Mage_Admin
         		'title' => $helper->__('Product'),
         		'required' => true,
         		'options' => $helper->getProductOptions(),
-        		'style' => 'min-width:280px; width: 100%;',
+        		'style' => 'min-width:280px; width: 100%; font-size: 16px;',
         );
         // Get last selected value if any
         $previousProduct = $this->getRequest()->getParam(self::PRODUCT_FORM_FIELD_NAME);
@@ -39,7 +39,8 @@ class Gareth_QuickStockAdjust_Block_Adminhtml_Stock_Edit_Form extends Mage_Admin
         		'name'    => 'decrement',	
         		'value'   => Mage::helper('gareth_quickstockadjust')->__('Reduce stock by 1'),
         		'onclick' => "editForm.submit()",
-        		'class'   => 'form-button'
+        		'class'   => 'form-button',
+        		'style'   => 'font-size: 16px;',
         ));
         
         
