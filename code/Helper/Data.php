@@ -10,17 +10,39 @@ class Gareth_QuickStockAdjust_Helper_Data extends Mage_Core_Helper_Abstract
 	
 	/**
 	 * Returns an array of all products for listing in the quick stock adjustdropdown.
+	 * 
+	 * @param string $searchString only return products with this string in sku or name
+	 * @var bool $addPleaseSelect whether to add a "Please Select" option at the top (with product_id==-1)
 	 * @return array product_id=>"Product Name (SKU Qty:n)"
 	 */
-	public function getProductOptions()
+	public function getProductOptions($searchString = null, $addPleaseSelect = true)
 	{
 		$products = array();
+		if ($addPleaseSelect)
+		{
+			$products[-1] = $this->__('Please select product');
+		}
+		
 		/* @var Mage_Catalog_Model_Product $productModel */
 		$productModel = Mage::getModel('catalog/product');
 		/* @var Mage_Catalog_Model_Resource_Product_Collection $productsCollection */
 		$productsCollection = $productModel->getCollection();
+		
+		// By default empty products are returned
 		$productsCollection->addAttributeToSelect("name");
 		$productsCollection->addAttributeToSort('name', 'ASC');
+		
+		if (!empty($searchString))
+		{
+			// where sku like '%xxx%' OR name like '%xxx%'
+			$productsCollection->addAttributeToFilter(
+					array(
+							array('attribute' => 'sku',  'like' => "%$searchString%"),
+							array('attribute' => 'name', 'like' => "%$searchString%"),
+					)
+					);
+		}
+		
 		/* @var Mage_Catalog_Model_Product $product */
 		foreach ($productsCollection as $product)
 		{
