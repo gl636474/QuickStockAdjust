@@ -1,6 +1,6 @@
 <?php
 
-require_once('app/code/local/Gareth/QuickStockAdjust/Block/Adminhtml/Stock/Edit/Form.php');
+//require_once('app/code/local/Gareth/QuickStockAdjust/Block/Adminhtml/Stock/Edit/Form.php');
 
 /**
  * Adminhtml Quick Stock Adjust controller
@@ -18,7 +18,7 @@ class Gareth_QuickStockAdjust_Adminhtml_QuickadjustController extends Mage_Admin
 		/* <catalog> and <quick_stock_adjust> under <menu> in config.xml */
 		$this->_setActiveMenu('catalog/quick_stock_adjust');
 		
-		$formContainerBlock = $this->getLayout()->createBlock('gareth_quickstockadjust_adminhtml/stock_edit');
+		$formContainerBlock = $this->getLayout()->createBlock('gareth_quickstockadjust_adminhtml/stock');
 		$this->_addContent($formContainerBlock);
 		
 		$this->renderLayout();
@@ -26,11 +26,10 @@ class Gareth_QuickStockAdjust_Adminhtml_QuickadjustController extends Mage_Admin
 	
 	public function decrementAction()
 	{
-		$productFieldName = Gareth_QuickStockAdjust_Block_Adminhtml_Stock_Edit_Form::PRODUCT_FORM_FIELD_NAME;
+		// must match the field in the action column URL in
+		// Gareth_QuickStockAdjust_Block_Adminhtml_Stock_Grid
+		$productFieldName = 'product';
 		$productId = $this->getRequest()->getParam($productFieldName);
-		
-		$searchFieldName = Gareth_QuickStockAdjust_Block_Adminhtml_Stock_Edit_Form::PRODUCT_FORM_FIELD_SEARCH;
-		$searchString = $this->getRequest()->getParam($searchFieldName);
 		
 		try
 		{
@@ -52,21 +51,15 @@ class Gareth_QuickStockAdjust_Adminhtml_QuickadjustController extends Mage_Admin
 						$stock_item->save();
 						
 						$this->_getSession()->addSuccess(
-								$this->__('%s stock count has been reduced to %d', $product->getName(), $stock_count)
+								$this->__('"%s" stock count has been reduced to %d', $product->getName(), $stock_count)
 								);
 					}
 					else
 					{
 						$this->_getSession()->addError(
-								$this->__('%s stock count already zero', $product->getName())
+								$this->__('"%s" stock count already zero', $product->getName())
 								);
 					}
-					
-					// <routers> from comnfig.xml / controller name / action name
-					return $this->_redirect(
-							'quick_stock_adjust_admin/quickadjust/index',
-							array($productFieldName => $productId)
-							);
 				}
 				else
 				{
@@ -75,19 +68,7 @@ class Gareth_QuickStockAdjust_Adminhtml_QuickadjustController extends Mage_Admin
 			}
 			else
 			{
-				if ($productId != -1)
-				{
-					$this->_getSession()->addError($this->__('Invalid product Id: %d', $productId));
-				}
-				else
-				{
-					// User is searching. Redisplay form.
-					// <routers> from comnfig.xml / controller name / action name
-					return $this->_redirect(
-							'quick_stock_adjust_admin/quickadjust/index',
-							array($searchFieldName => $searchString)
-							);
-				}
+				$this->_getSession()->addError($this->__('Invalid product Id: %s', $productId));
 			}
 		}
 		catch (Exception $e) {
@@ -95,6 +76,7 @@ class Gareth_QuickStockAdjust_Adminhtml_QuickadjustController extends Mage_Admin
 			$this->_getSession()->addError($e->getMessage());
 		}
 		
+		// We always redirect back to the quick stock adjust table
 		// <routers> from comnfig.xml / controller name / action name
 		return $this->_redirect('quick_stock_adjust_admin/quickadjust/index');
 	}
