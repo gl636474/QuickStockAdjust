@@ -2,6 +2,18 @@
 class Gareth_QuickStockAdjust_Block_Adminhtml_Stock_Grid
     extends Mage_Adminhtml_Block_Widget_Grid
 {
+	/**
+	 * Internal constructor, that is called from real constructor
+	 */
+	protected function _construct()
+	{
+		parent::_construct();
+		
+		$this->setDefaultSort('name');
+		$this->setDefaultDir('asc');
+		$this->setDefaultLimit(50);	
+	}
+	
     protected function _prepareCollection()
     {
         /**
@@ -53,16 +65,21 @@ class Gareth_QuickStockAdjust_Block_Adminhtml_Stock_Grid
     	
         /**
          * Here we define which columns we want to be displayed in the grid.
+         * Note setting width="1px" will make the column as small as it can be
+         * but still fitting the sized contents. Plain text or links aren't
+         * sized so setting a size may force text/link to wrap.
          */
+    	
         $this->addColumn('entity_id', array(
         		'header' => $helper->__('ID'),
             	'type' => 'number',
             	'index' => 'entity_id',
+        		'width' => '1px',
         ));
         
         $this->addColumn('sku', array(
         		'header' => $helper->__('SKU'),
-        		'width' => '9ex',
+        		'width' => '1px',
         		'type' => 'text',
         		'index' => 'sku',
         ));
@@ -72,19 +89,19 @@ class Gareth_QuickStockAdjust_Block_Adminhtml_Stock_Grid
         		'type' => 'text',
         		'index' => 'name',
         ));
-        
-                $this->addColumn('qty', array(
-        		'header' => $helper->__('# Stock'),
-            	'type' => 'number',
-            	'index' => 'qty',
+
+        $this->addColumn('qty', array(
+        		'header' => $helper->__('Stock Level'),
+        		'type' => 'number',
+        		'index' => 'qty',
         ));
         
-/**
-         * Finally we add an action column with an edit link.
+		/**
+         * An action column with a link to reduce stock by 1
          */
-        $this->addColumn('action', array(
+        $this->addColumn('decrement_action', array(
         		'header' => $helper->__('Action'),
-	            'width' => '20ex',
+	            'width' => '120px',
 	            'type' => 'action',
 	            'actions' => array(
 	                array(

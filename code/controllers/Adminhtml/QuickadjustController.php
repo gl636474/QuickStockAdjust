@@ -9,6 +9,9 @@
  */
 class Gareth_QuickStockAdjust_Adminhtml_QuickadjustController extends Mage_Adminhtml_Controller_Action
 {
+	/**
+	 * Called to display the page (GET request)
+	 */
 	public function indexAction()
 	{
 		//$this->_title($this->__('System'))->_title($this->__('My Account'));
@@ -21,9 +24,22 @@ class Gareth_QuickStockAdjust_Adminhtml_QuickadjustController extends Mage_Admin
 		$formContainerBlock = $this->getLayout()->createBlock('gareth_quickstockadjust_adminhtml/stock');
 		$this->_addContent($formContainerBlock);
 		
+		$jsBlock = $this->getLayout()->createBlock('core/text');
+		$jsBlock->setText('
+function submitGridRow() {
+    alert("HI");
+}
+');
+		$this->_addJs($jsBlock);
+		
 		$this->renderLayout();
 	}
 	
+	/**
+	 * Called when user clicks "Reduce Stock by 1" link for a specific product.
+	 * 
+	 * @return Gareth_QuickStockAdjust_Adminhtml_QuickadjustController
+	 */
 	public function decrementAction()
 	{
 		// must match the field in the action column URL in
@@ -75,6 +91,21 @@ class Gareth_QuickStockAdjust_Adminhtml_QuickadjustController extends Mage_Admin
 			Mage::logException($e);
 			$this->_getSession()->addError($e->getMessage());
 		}
+		
+		// We always redirect back to the quick stock adjust table
+		// <routers> from comnfig.xml / controller name / action name
+		return $this->_redirect('quick_stock_adjust_admin/quickadjust/index');
+	}
+	
+	/**
+	 * Called when use clicks link to set stock level for specific product.
+	 * 
+	 * @return Gareth_QuickStockAdjust_Adminhtml_QuickadjustController
+	 */
+	public function setstocklevelAction()
+	{
+		var_dump($this->getRequest()->getParams());
+		die();
 		
 		// We always redirect back to the quick stock adjust table
 		// <routers> from comnfig.xml / controller name / action name
