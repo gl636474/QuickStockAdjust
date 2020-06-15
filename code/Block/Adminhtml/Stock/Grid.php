@@ -23,6 +23,7 @@ class Gareth_QuickStockAdjust_Block_Adminhtml_Stock_Grid
         $collection = Mage::getModel('catalog/product')->getCollection();
         // By default empty products are returned
         $collection->addAttributeToSelect("name");
+        $collection->addAttributeToSelect("status");
         
         // Join stock_item table for qty
         $collection->joinField('qty', 			// alias - resultset column name
@@ -90,6 +91,15 @@ class Gareth_QuickStockAdjust_Block_Adminhtml_Stock_Grid
         		'index' => 'name',
         ));
 
+        $this->addColumn('status', array(
+        		'header'=> $helper->__('Status'),
+        		'width' => '70px',
+        		'type'  => 'options',
+        		'index' => 'status',
+        		'options' => Mage::getSingleton('catalog/product_status')->getOptionArray(),
+        ));
+        
+        
         $this->addColumn('qty', array(
         		'header' => $helper->__('Stock Level'),
         		'type' => 'number',
